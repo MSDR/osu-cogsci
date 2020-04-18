@@ -2,10 +2,12 @@
 #define GAME_H_
 
 #include <algorithm>?
+#include <iostream>
 
 #include "Graphics.h"
 #include "Input.h"
 #include "Sprite.h"
+#include "Text.h"
 
 class Game {
 public:
@@ -20,6 +22,8 @@ private:
 	void update(float elapsedTime);
 
 	Sprite sprite_;
+
+	int msCounter_;
 };
 
 #endif GAME_H_

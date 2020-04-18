@@ -11,6 +11,7 @@ namespace input_keys {
 
 Game::Game() {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	msCounter_ = 0;
 	gameLoop();
 }
 
@@ -50,15 +51,22 @@ void Game::gameLoop() {
 
 		const int CURRENT_TIME_MILLIS = SDL_GetTicks();
 		int ELAPSED_TIME_MILLIS = CURRENT_TIME_MILLIS - LAST_UPDATE_TIME;
+		msCounter_ += ELAPSED_TIME_MILLIS;
 		update(std::min(ELAPSED_TIME_MILLIS, MAX_FRAME_TIME));
 		LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
 		draw(graphics);
+		std::cout << msCounter_ << std::endl;
 	}//end game loop
 }
 
 void Game::draw(Graphics &graphics) {
 	graphics.clear();
 	sprite_.draw(graphics, sprite_.getX(), sprite_.getY());
+	//Text msCounter;
+	//std::string str = "Impact.ttf";
+	//msCounter.loadFont(str, 24);
+	//msCounter.update(graphics, std::to_string(msCounter_), { 100,100,100,100 });
+	//msCounter.draw(graphics, 100, 100, 0.0);
 	graphics.flip();
 }
 

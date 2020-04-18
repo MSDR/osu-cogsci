@@ -1,15 +1,15 @@
 ﻿  game.cpp
 c:\users\mason\documents\osu!cogsci\osu!cogsci\game.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 c:\users\mason\documents\osu!cogsci\osu!cogsci\rectangle.h(31): warning C4244: 'return': conversion from 'float' to 'const int', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(75): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
+c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(80): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(84): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(89): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating code
-  1 of 243 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  4 of 243 functions ( 1.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   osu!cogsci.vcxproj -> C:\Users\Mason\Documents\osu!cogsci\x64\Release\osu!cogsci.exe

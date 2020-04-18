@@ -12,8 +12,9 @@ namespace input_keys {
 Game::Game() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
-
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 	msCounter_ = 0;
+	beatmap_ = -1;
 	gameLoop();
 
 	//Close SDL
@@ -69,6 +70,10 @@ void Game::gameLoop() {
 			return;
 		}
 
+		if (input.wasKeyPressed(SDL_SCANCODE_X) || input.wasKeyPressed(SDL_SCANCODE_Z)) {
+			Mix_Chunk* hitSound = Mix_LoadWAV("Skin/normal-hitnormal.wav");
+			Mix_PlayChannel(-1, hitSound, 0);
+		}
 		const int CURRENT_TIME_MILLIS = SDL_GetTicks();
 		int ELAPSED_TIME_MILLIS = CURRENT_TIME_MILLIS - LAST_UPDATE_TIME;
 		msCounter_ += ELAPSED_TIME_MILLIS;

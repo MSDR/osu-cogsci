@@ -89,6 +89,7 @@
     <Link>
       <AdditionalLibraryDirectories>SDL_ttf_lib_x64;SDL_lib_x64;SDL_Image_lib_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2_ttf.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,6 +121,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>SDL_ttf_lib_x64;SDL_lib_x64;SDL_Image_lib_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2_ttf.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -141,6 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="impact.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Skin\cursor%402x.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

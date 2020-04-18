@@ -11,8 +11,14 @@ namespace input_keys {
 
 Game::Game() {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	IMG_Init(IMG_INIT_PNG);
+
 	msCounter_ = 0;
 	gameLoop();
+
+	//Close SDL
+	IMG_Quit();
+	SDL_Quit();
 }
 
 Game::~Game() {
@@ -28,6 +34,20 @@ void Game::gameLoop() {
 	int width, int height, float posX, float posY); */
 
 	int LAST_UPDATE_TIME = SDL_GetTicks();
+
+	//Load custom cursor
+	SDL_Surface* cursorSurface = IMG_Load("Skin/cursor.png");
+	if (cursorSurface) {
+		std::cout << "success";
+		SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
+		if (cursor) {
+			SDL_SetCursor(cursor);
+			std::cout << "set cursor\n";
+		}
+	}
+	else {
+		std::cout << IMG_GetError();
+	}
 
 	//Start game loop
 	while (true) {
@@ -55,7 +75,7 @@ void Game::gameLoop() {
 		update(std::min(ELAPSED_TIME_MILLIS, MAX_FRAME_TIME));
 		LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
 		draw(graphics);
-		std::cout << msCounter_ << std::endl;
+		//std::cout << msCounter_ << std::endl;
 	}//end game loop
 }
 

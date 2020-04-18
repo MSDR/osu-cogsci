@@ -60,4 +60,9 @@
   <ItemGroup>
     <Font Include="impact.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Skin\cursor%402x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

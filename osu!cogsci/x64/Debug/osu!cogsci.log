@@ -1,10 +1,1 @@
-﻿  game.cpp
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\mason\documents\osu!cogsci\osu!cogsci\rectangle.h(31): warning C4244: 'return': conversion from 'float' to 'const int', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(55): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  osu!cogsci.vcxproj -> C:\Users\Mason\Documents\osu!cogsci\x64\Debug\osu!cogsci.exe
+﻿  osu!cogsci.vcxproj -> C:\Users\Mason\Documents\osu!cogsci\x64\Debug\osu!cogsci.exe

@@ -8,6 +8,9 @@ namespace globals {
 	const int SCREEN_HEIGHT = 1080;
 
 	static float SPRITE_SCALE = 1.0;
+
+	static int APPROACH_CIRCLE_RATE = 1000;
+	static int HIT_CIRCLE_RADIUS = 100;
 }
 
 namespace sides {

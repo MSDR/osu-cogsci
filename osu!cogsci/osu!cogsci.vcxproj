@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="HitCircle.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -136,8 +137,8 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="HitCircle.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
   </ItemGroup>

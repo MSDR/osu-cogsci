@@ -6,32 +6,25 @@
 #include <SDL.h>
 #include <string>
 
+#include "Globals.h"
 #include "Graphics.h"
-#include "Rectangle.h"
 
 class Sprite {
 public:
 	Sprite();
-	Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int sourceY, int width, int height, float posX, float posY);
+	Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int sourceY, int width, int height, float posX=0, float posY=0);
 	virtual ~Sprite();
 
 	//Updates the Sprite and its members
 	virtual void update(float elapsedTime);
 
 	//Draws the Sprite onto the screen
-	void draw(Graphics &graphics, int x, int y);
+	void draw(Graphics &graphics, int x, int y, bool nullSRect = false, float hScale = 1.0, float wScale = 1.0);
 
-	const Rectangle getBoundingBox() const;
 	const float getWidth() const;
 	const float getHeight() const;
 	const float getX() const;
 	const float getY() const;
-
-	//Updates the BoundingBox_ of the Sprite
-	void updateBoundingBox();
-
-	//Given another Rectangle, returns the side of collision
-	const sides::Side getCollisionSide(Rectangle &other) const;
 
 protected:
 	SDL_Rect sourceRect_;
@@ -39,7 +32,6 @@ protected:
 	float x_;
 	float y_;
 
-	Rectangle boundingBox_;
 };
 
 #endif SPRITE_H_

@@ -34,6 +34,12 @@ void Game::gameLoop() {
 	/*sprite_ = Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int sourceY, 
 	int width, int height, float posX, float posY); */
 
+	hitCircle_ = new Sprite(graphics, "Skin/hitcircle@2x.png", 0, 0, globals::HIT_CIRCLE_RADIUS, globals::HIT_CIRCLE_RADIUS);
+	hitCircleOverlay_ = new Sprite(graphics, "Skin/hitcircleoverlay@2x.png", 0, 0, globals::HIT_CIRCLE_RADIUS, globals::HIT_CIRCLE_RADIUS);
+	approachCircle_ = new Sprite(graphics, "Skin/approachcircle@2x.png", 0, 0, globals::HIT_CIRCLE_RADIUS, globals::HIT_CIRCLE_RADIUS);
+	testCircle_ = new HitCircle(hitCircle_, hitCircleOverlay_, approachCircle_, 2000, Vector2(500, 500), 1);
+	testCircle2_ = new HitCircle(hitCircle_, hitCircleOverlay_, approachCircle_, 3000, Vector2(1000, 540), 1);
+
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 
 	//Load custom cursor
@@ -53,7 +59,6 @@ void Game::gameLoop() {
 	//Start game loop
 	while (true) {
 		input.beginNewFrame();
-
 		if (SDL_PollEvent(&event)) {
 			if (event.type == SDL_KEYDOWN) {
 				if (event.key.repeat == 0) {
@@ -80,13 +85,15 @@ void Game::gameLoop() {
 		update(std::min(ELAPSED_TIME_MILLIS, MAX_FRAME_TIME));
 		LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
 		draw(graphics);
-		//std::cout << msCounter_ << std::endl;
+		std::cout << msCounter_ << std::endl;
 	}//end game loop
 }
 
 void Game::draw(Graphics &graphics) {
 	graphics.clear();
-	sprite_.draw(graphics, sprite_.getX(), sprite_.getY());
+	//sprite_.draw(graphics, sprite_.getX(), sprite_.getY());
+	testCircle_->draw(graphics, msCounter_);
+	testCircle2_->draw(graphics, msCounter_);
 	//Text msCounter;
 	//std::string str = "Impact.ttf";
 	//msCounter.loadFont(str, 24);

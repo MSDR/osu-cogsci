@@ -7,6 +7,7 @@
 #include "SDL_include/SDL_mixer.h"
 
 #include "Graphics.h"
+#include "HitCircle.h"
 #include "Input.h"
 #include "Sprite.h"
 #include "Text.h"
@@ -30,6 +31,13 @@ private:
 	int beatmap_;
 
 	SDL_Surface** hitCircleParts;
+
+	HitCircle* testCircle_;
+	HitCircle* testCircle2_;
+
+	Sprite* hitCircle_;
+	Sprite* hitCircleOverlay_;
+	Sprite* approachCircle_; //remember to delete these after each beatmap
 };
 
 #endif GAME_H_

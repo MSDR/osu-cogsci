@@ -30,7 +30,6 @@ Sprite::~Sprite() {
 void Sprite::draw(Graphics &graphics, int x, int y, bool nullSRect, float hScale, float wScale) {
 	SDL_Rect destinationRectangle = { x, y, sourceRect_.w * hScale, sourceRect_.h * wScale };
 	graphics.blitSurface(spriteSheet_, nullSRect ? NULL : &sourceRect_, &destinationRectangle);
-	std::cout << "in sprite\n";
 }
 
 void Sprite::update(float elapsedTime) {

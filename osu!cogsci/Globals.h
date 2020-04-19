@@ -9,7 +9,7 @@ namespace globals {
 
 	static float SPRITE_SCALE = 1.0;
 
-	static int APPROACH_CIRCLE_RATE = 1000;
+	static int APPROACH_CIRCLE_RATE = 10000;
 	static int HIT_CIRCLE_RADIUS = 100;
 }
 

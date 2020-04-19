@@ -24,7 +24,6 @@ SDL_Surface* Graphics::loadImage(const std::string &filePath) {
 }
 #include <iostream>
 void Graphics::blitSurface(SDL_Texture* texture, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle) {
-	std::cout << std::endl << destinationRectangle->x << " " << destinationRectangle->y << " " << destinationRectangle->w << " " << destinationRectangle->h << std::endl;
 	SDL_RenderCopy(renderer_, texture, sourceRectangle, destinationRectangle);
 }
 

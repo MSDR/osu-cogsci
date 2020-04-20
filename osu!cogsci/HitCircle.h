@@ -9,7 +9,8 @@ class HitCircle {
 public:
 	HitCircle(Sprite* hitCircle, Sprite* hitCircleOverlay, Sprite* approachCircle, int offset, Vector2 coords, int comboNum) 
 		: hitCircle_(hitCircle), hitCircleOverlay_(hitCircleOverlay), approachCircle_(approachCircle), 
-		  offset_(offset), coords_(coords), comboNum_(comboNum), clicked_(false) {};
+		offset_(offset), coords_(coords), comboNum_(comboNum), clicked_(false) {
+	};
 
 	~HitCircle();
 

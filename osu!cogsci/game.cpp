@@ -1,8 +1,7 @@
 #include "Game.h"
 
 namespace {
-	const int FPS = 60;
-	const int MAX_FRAME_TIME = 75;
+	int FPS = 120;
 }
 
 namespace input_keys {
@@ -13,7 +12,7 @@ Game::Game() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	msCounter_ = -10000;
+	msCounter_ = 0000;
 	beatmap_ = -1;
 	gameLoop();
 
@@ -91,12 +90,14 @@ void Game::gameLoop() {
 		}
 
 		//Update timing
-		const int CURRENT_TIME_MILLIS = SDL_GetTicks();
+		int CURRENT_TIME_MILLIS = SDL_GetTicks();
 		int ELAPSED_TIME_MILLIS = CURRENT_TIME_MILLIS - LAST_UPDATE_TIME;
-		msCounter_ += ELAPSED_TIME_MILLIS;
-		update(std::min(ELAPSED_TIME_MILLIS, MAX_FRAME_TIME));
-		LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
-		draw(graphics);
+		update(ELAPSED_TIME_MILLIS);
+		if(ELAPSED_TIME_MILLIS >= 1000/FPS) {
+			msCounter_ += ELAPSED_TIME_MILLIS;
+			LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
+			draw(graphics);
+		}
 		//std::cout << msCounter_ << std::endl;
 	}
 }
@@ -115,6 +116,7 @@ void Game::draw(Graphics &graphics) {
 		--itr;
 	}
 	graphics.flip();
+	std::cout << "I'm gonna try writing this to see what happens";
 }
 
 void Game::update(float elapsedTime) {

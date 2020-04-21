@@ -9,8 +9,11 @@ namespace globals {
 
 	static float SPRITE_SCALE = 1.0;
 
-	static int APPROACH_CIRCLE_RATE = 1000;
+	static int APPROACH_CIRCLE_RATE = 10000;
 	static int HIT_CIRCLE_RADIUS = 100;
+
+	static float RES_MULTIPLIER_X = 2.5;
+	static float RES_MULTIPLIER_Y = 2.5;
 }
 
 namespace sides {

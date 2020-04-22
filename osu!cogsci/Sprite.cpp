@@ -1,7 +1,5 @@
 //Sprite class adapted from LimeOats: https://limeoats.com/, modified and commented by Mason Sklar [2019]
 
-#include <iostream>
-
 #include "Sprite.h"
 
 Sprite::Sprite() {
@@ -27,7 +25,7 @@ Sprite::Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int
 Sprite::~Sprite() {
 }
 
-void Sprite::draw(Graphics &graphics, int x, int y, bool nullSRect, float hScale, float wScale) {
+void Sprite::draw(Graphics &graphics, int x, int y, bool nullSRect, float hScale, float wScale, float opacity) {
 	SDL_Rect destinationRectangle = { x, y, sourceRect_.w * hScale, sourceRect_.h * wScale };
 	graphics.blitSurface(spriteSheet_, nullSRect ? NULL : &sourceRect_, &destinationRectangle);
 }
@@ -36,11 +34,11 @@ void Sprite::update(float elapsedTime) {
 }
 
 const float Sprite::getWidth() const {
-	return sourceRect_.w*globals::SPRITE_SCALE;
+	return sourceRect_.w;
 }
 
 const float Sprite::getHeight() const {
-	return sourceRect_.h*globals::SPRITE_SCALE;
+	return sourceRect_.h;
 }
 
 const float Sprite::getX() const {

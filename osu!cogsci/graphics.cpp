@@ -1,13 +1,23 @@
 //Graphics class adapted from LimeOats: https://limeoats.com/, modified and commented by Mason Sklar [2020]
 
-#include "Globals.h"
 #include "graphics.h"
 
+int SCREEN_WIDTH;
+int SCREEN_HEIGHT;
+float COORDINATE_SCALE;
+
 Graphics::Graphics() {
-	SDL_CreateWindowAndRenderer(globals::SCREEN_WIDTH * globals::SPRITE_SCALE, globals::SCREEN_HEIGHT * globals::SPRITE_SCALE,
-		0, &window_, &renderer_);
-	SDL_SetWindowTitle(window_, "TITLE");
-	SDL_ShowCursor(SDL_ENABLE);
+	//find display resolution and assign global variables accordingly
+	SDL_Rect* r = new SDL_Rect();
+	SDL_GetDisplayBounds(0, r);
+	SCREEN_WIDTH = r->w;
+	SCREEN_HEIGHT =  r->h;
+	COORDINATE_SCALE = SCREEN_HEIGHT / 512;
+
+	//create window
+	SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window_, &renderer_);
+	SDL_SetWindowTitle(window_, "osu!cogsci");
+	SDL_SetWindowFullscreen(window_, SDL_TRUE);
 }
 
 Graphics::~Graphics() {
@@ -22,7 +32,7 @@ SDL_Surface* Graphics::loadImage(const std::string &filePath) {
 
 	return spriteSheets_[filePath];
 }
-#include <iostream>
+
 void Graphics::blitSurface(SDL_Texture* texture, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle) {
 	SDL_RenderCopy(renderer_, texture, sourceRectangle, destinationRectangle);
 }

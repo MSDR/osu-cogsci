@@ -3,21 +3,20 @@
 
 #include <algorithm>?
 #include <cmath>
-#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 
 #include "SDL_include/SDL_mixer.h"
 
-#include "Graphics.h"
 #include "HitCircle.h"
 #include "Input.h"
-#include "Sprite.h"
 #include "Text.h"
+
 
 class Game {
 public:
 	Game();
-	~Game();
 
 private:
 	void gameLoop();

@@ -3,10 +3,14 @@
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
 
+#include <iostream>
 #include <map>
 #include "SDL_include/SDL.h"
 #include "SDL_include/SDL_image.h"
 #include <string>
+
+#include "Globals.h"
+
 
 class Graphics {
 public:

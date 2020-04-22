@@ -3,18 +3,15 @@
 #ifndef  GLOBALS_H_
 #define GLOBALS_H_
 
-namespace globals {
-	const int SCREEN_WIDTH = 1920;
-	const int SCREEN_HEIGHT = 1080;
+//defined in graphics.cpp
+extern float COORDINATE_SCALE;
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 
-	static float SPRITE_SCALE = 1.0;
+//defined in game.cpp
+extern int APPROACH_CIRCLE_RATE;
+extern int HIT_CIRCLE_RADIUS;
 
-	static int APPROACH_CIRCLE_RATE = 10000;
-	static int HIT_CIRCLE_RADIUS = 100;
-
-	static float RES_MULTIPLIER_X = 2.5;
-	static float RES_MULTIPLIER_Y = 2.5;
-}
 
 namespace sides {
 	enum Side {

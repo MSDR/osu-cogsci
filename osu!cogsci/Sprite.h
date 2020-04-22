@@ -3,9 +3,6 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include <SDL.h>
-#include <string>
-
 #include "Globals.h"
 #include "Graphics.h"
 
@@ -13,13 +10,13 @@ class Sprite {
 public:
 	Sprite();
 	Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int sourceY, int width, int height, float posX=0, float posY=0);
-	virtual ~Sprite();
+	~Sprite();
 
 	//Updates the Sprite and its members
-	virtual void update(float elapsedTime);
+	void update(float elapsedTime);
 
 	//Draws the Sprite onto the screen
-	void draw(Graphics &graphics, int x, int y, bool nullSRect = false, float hScale = 1.0, float wScale = 1.0);
+	void draw(Graphics &graphics, int x, int y, bool nullSRect = false, float hScale = 1.0, float wScale = 1.0, float opacity = 255);
 
 	const float getWidth() const;
 	const float getHeight() const;

@@ -7,8 +7,6 @@
 extern float COORDINATE_SCALE;
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
-
-//defined in game.cpp
 extern int APPROACH_CIRCLE_RATE;
 extern int HIT_CIRCLE_RADIUS;
 
@@ -37,6 +35,16 @@ enum Direction {
 	RIGHT,
 	UP,
 	DOWN
+};
+
+struct Vector2f {
+	float x, y;
+	Vector2f() : x(0), y(0) {}
+	Vector2f(float x, float y) : x(x), y(y) {}
+
+	Vector2f zero() {
+		return Vector2f(0, 0);
+	}
 };
 
 struct Vector2 {

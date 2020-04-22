@@ -26,8 +26,10 @@ private:
 	void update(float elapsedTime);
 
 	int msCounter_;
-
 	int beatmap_;
+
+	float CS_;
+	float AR_;
 
 	HitCircle* testCircle_;
 	HitCircle* testCircle2_;

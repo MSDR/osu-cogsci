@@ -5,19 +5,29 @@
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
 float COORDINATE_SCALE;
+int APPROACH_CIRCLE_RATE;
+int HIT_CIRCLE_RADIUS;
 
-Graphics::Graphics() {
-	//find display resolution and assign global variables accordingly
+Graphics::Graphics(float CS, float AR) {
+	//Find display resolution and assign global variables accordingly
 	SDL_Rect* r = new SDL_Rect();
 	SDL_GetDisplayBounds(0, r);
 	SCREEN_WIDTH = r->w;
 	SCREEN_HEIGHT =  r->h;
 	COORDINATE_SCALE = SCREEN_HEIGHT / 512;
 
-	//create window
+	//Create window
 	SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window_, &renderer_);
 	SDL_SetWindowTitle(window_, "osu!cogsci");
 	SDL_SetWindowFullscreen(window_, SDL_TRUE);
+
+	//Assign Circle Size and Approach Rate
+	HIT_CIRCLE_RADIUS = COORDINATE_SCALE*((109 - 9 * CS)/2.0);
+	std::cout << "CS: " << CS << " HIT_RADIUS: " << HIT_CIRCLE_RADIUS << std::endl;
+	if (AR < 4.95) APPROACH_CIRCLE_RATE = 1200 + 600 * (5 - AR) / 5;
+	else if (AR > 4.95) APPROACH_CIRCLE_RATE = 1200 - 750 * (AR - 5) / 5;
+	else APPROACH_CIRCLE_RATE = 1200;
+	std::cout << "AR: " << AR << " APPROACH_RATE: " << APPROACH_CIRCLE_RATE << std::endl;
 }
 
 Graphics::~Graphics() {

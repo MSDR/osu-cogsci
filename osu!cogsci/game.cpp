@@ -10,6 +10,39 @@ namespace input_keys {
 	SDL_Scancode key_name = SDL_SCANCODE_0;
 }
 
+//Finds and returns a Vector2f(CircleSize, ApproachRate)
+Vector2f assignDifficulty(const std::string& fileName) {
+	std::ifstream inFile(fileName + ".txt");
+	if (!inFile) {
+		std::cout << "File not found!" << std::endl;
+	}
+	std::string tmpStr = "";
+	std::vector<std::string> line;
+	int tmpNum;
+
+	//Advance to setup metrics
+	while (tmpStr != "[Difficulty]") {
+		inFile >> tmpStr;
+	}
+	inFile >> tmpStr;
+	inFile >> tmpStr;
+
+	//Calculate circle radius: https://osu.ppy.sh/community/forums/topics/311844
+	float CS = std::atof(tmpStr.substr(11).c_str());
+	//std::cout << tmpStr.substr(11) << std::endl;
+	std::cout << "CS: " << CS << " HIT_RADIUS: " << HIT_CIRCLE_RADIUS << std::endl;
+	inFile >> tmpStr;
+	inFile >> tmpStr;
+
+	//Calculate approach rate: https://osu.ppy.sh/help/wiki/Beatmapping/Approach_rate
+	float AR = std::atof(tmpStr.substr(13).c_str());
+	//std::cout << tmpStr.substr(13) << std::endl;
+
+	std::cout << "AR: " << AR << " APPROACH_RATE: " << APPROACH_CIRCLE_RATE << std::endl;
+
+	return Vector2f(CS, AR);
+}
+
 //Helper function used in parsing input
 std::vector<std::string> splitStr(std::string& strIn) {
 	std::stringstream sstream(strIn);
@@ -31,6 +64,7 @@ void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCirc
 	std::string tmpStr = "";
 	std::vector<std::string> line;
 	int tmpNum;
+
 	//Go through file until it finds the hitcircles
 	while (tmpStr != "[HitObjects]") {
 		inFile >> tmpStr;
@@ -56,19 +90,13 @@ void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCirc
 	}
 }
 
-int APPROACH_CIRCLE_RATE;
-int HIT_CIRCLE_RADIUS;
 
 Game::Game() {
-	//Assign global variables
-	APPROACH_CIRCLE_RATE = 600;
-	HIT_CIRCLE_RADIUS = 100;
-
 	//Initialize SDL, local variables
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	msCounter_ = 0000;
+	msCounter_ = 000;
 	beatmap_ = -1;
 
 	gameLoop();
@@ -78,8 +106,12 @@ Game::Game() {
 	SDL_Quit();
 }
 
+
+//The main game loop. Once exited, the program closes.
 void Game::gameLoop() {
-	Graphics graphics;
+	std::string songName = "Beatmaps/Algorhythm";
+	Vector2f diff = assignDifficulty(songName);
+	Graphics graphics(diff.x, diff.y);
 	std::cout << SCREEN_WIDTH << " " << SCREEN_HEIGHT << " " << COORDINATE_SCALE << std::endl;
 	Input input;
 	SDL_Event event;
@@ -93,7 +125,6 @@ void Game::gameLoop() {
 	approachCircle_ = new Sprite(graphics, "Skin/approachcircle@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 
 	//Fill the hitCircles_ vector with the set beatmap
-	std::string songName = "Beatmaps/Map0";
 	fillCircleVec(songName, hitCircles_, hitCircle_, hitCircleOverlay_, approachCircle_);
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 
@@ -170,6 +201,7 @@ void Game::draw(Graphics &graphics) {
 	graphics.clear();
 	std::vector<HitCircle*>::iterator itr = hitCircles_.end();
 	--itr;
+
 	//Loop through hitCircles_ vector, delete if circle's been clicked or is expired. Otherwise, draw it.
 	for(int i = hitCircles_.size()-1; i >=0 ; --i) {
 		if (hitCircles_[i]->getOffset() - msCounter_ < -APPROACH_CIRCLE_RATE || hitCircles_[i]->clicked_) {

@@ -14,7 +14,7 @@
 
 class Graphics {
 public:
-	Graphics();
+	Graphics(float CS = 5.0, float AR = 5.0);
 	~Graphics();
 
 	//Loads an image into the spriteSheets_ map if it doesn't already exist

@@ -22,8 +22,11 @@ Graphics::Graphics(float CS, float AR) {
 	SDL_SetWindowFullscreen(window_, SDL_TRUE);
 
 	//Assign Circle Size and Approach Rate
-	HIT_CIRCLE_RADIUS = COORDINATE_SCALE*((109 - 9 * CS)/2.0);
-	std::cout << "CS: " << CS << " HIT_RADIUS: " << HIT_CIRCLE_RADIUS << std::endl;
+	//https://osu.ppy.sh/community/forums/topics/311844
+	HIT_CIRCLE_RADIUS = COORDINATE_SCALE*((109 - 9 * CS)/2.0); 
+	//std::cout << "CS: " << CS << " HIT_RADIUS: " << HIT_CIRCLE_RADIUS << std::endl;
+
+	//https://osu.ppy.sh/help/wiki/Beatmapping/Approach_rate
 	if (AR < 4.95) APPROACH_CIRCLE_RATE = 1200 + 600 * (5 - AR) / 5;
 	else if (AR > 4.95) APPROACH_CIRCLE_RATE = 1200 - 750 * (AR - 5) / 5;
 	else APPROACH_CIRCLE_RATE = 1200;

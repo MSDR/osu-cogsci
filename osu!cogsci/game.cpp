@@ -119,8 +119,8 @@ Game::Game() {
 
 //The main game loop. Once exited, the program closes.
 void Game::gameLoop() {
-	std::string songName = "Beatmaps/Algorhythm";
-	Vector2f diff = assignDifficulty(songName, ms300, ms100, ms50);
+	std::string songName = "Beatmaps/Undertale";
+	Vector2f diff = assignDifficulty(songName, ms300_, ms100_, ms50_);
 	Graphics graphics(diff.x, diff.y);
 	std::cout << SCREEN_WIDTH << " " << SCREEN_HEIGHT << " " << COORDINATE_SCALE << std::endl;
 	Input input;
@@ -136,12 +136,18 @@ void Game::gameLoop() {
 
 	//Initialize number and score assets
 	for (int i = 0; i < 10; i++) {
-		numSprite[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, 40, 52);
-		scoreSprite[i] = new Sprite(graphics, "Skin/score-" + std::to_string(i) + ".png", 0, 0, 36, 60);
+		numSprite_[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, 40, 52);
+		scoreSprite_[i] = new Sprite(graphics, "Skin/score-" + std::to_string(i) + ".png", 0, 0, 36, 60);
 	}
 	//Initialize other score assets
-	scoreSprite[10] = new Sprite(graphics, "Skin/score-dot.png", 0, 0, 35, 60);
-	scoreSprite[11] = new Sprite(graphics, "Skin/score-percent.png", 0, 0, 35, 60);
+	scoreSprite_[10] = new Sprite(graphics, "Skin/score-dot.png", 0, 0, 35, 60);
+	scoreSprite_[11] = new Sprite(graphics, "Skin/score-percent.png", 0, 0, 35, 60);
+
+	//Initialize circle score assets
+	sprite300_ = new Sprite(graphics, "Skin/hit300.png", 0, 0, 30, 30);
+	sprite100_ = new Sprite(graphics, "Skin/hit100.png", 0, 0, 30, 30);
+	sprite50_ = new Sprite(graphics, "Skin/hit50.png", 0, 0, 30, 30);
+	sprite0_ = new Sprite(graphics, "Skin/hit0.png", 0, 0, 30, 30);
 
 	//Fill the hitCircles_ vector with the set beatmap
 	fillCircleVec(songName, hitCircles_, hitCircle_, hitCircleOverlay_, approachCircle_);
@@ -155,19 +161,23 @@ void Game::gameLoop() {
 	}
 
 	//Initialize variables needed to calculate accuracy and score
-	num300 = 0;
-	num100 = 0;
-	num50 = 0;
-	numMiss = 0;
-	notesPassed = 0;
-	accuracy = 100;
+	num300_ = 0;
+	num100_ = 0;
+	num50_ = 0;
+	numMiss_ = 0;
+	notesPassed_ = 0;
+	accuracy_ = 100;
 
 	//Start the audio
-	/*Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
-	music = Mix_LoadMUS("Beatmaps/Pokemon Rap.mp3");
-	Mix_PlayMusic(music, 0);*/
+	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
+	music = Mix_LoadMUS((songName + ".mp3").c_str());
+	if(!music) {
+		std::cout << "Mix_LoadMUS(\"music.mp3\"): " << Mix_GetError() << std::endl;
+	}
 
+	Mix_PlayMusic(music, 0);
 
+	//Mix_LoadMUS("music.mp3"): Failed loading libmpg123-0.dll: The specified module could not be found.
 	//Start game loop
 	while (true) {
 		input.beginNewFrame();
@@ -207,24 +217,30 @@ void Game::gameLoop() {
 				if (std::sqrt(std::pow(hitCircles_[i]->getCoords().x - mouseX, 2) + std::pow(hitCircles_[i]->getCoords().y - mouseY, 2)) <= HIT_CIRCLE_RADIUS) {
 					hitCircles_[i]->clicked_ = true;
 					//Add to num300, num100, num50, or numMiss and update accuracy
-					if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms300) {
-						num300++;
+					if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms300_) {
+						num300_++;
+						hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit300.png", 0, 0, 50, 50), msCounter_));
+						hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));
 						Mix_PlayChannel(-1, normalHitNormal_, 0);
 					}
-					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms100) {
-						num100++;
+					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms100_) {
+						num100_++;
+						hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit100.png", 0, 0, 50, 50), msCounter_));
+						hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));
 						Mix_PlayChannel(-1, normalHitNormal_, 0);
 					}
-					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms50) {
-						num50++;
+					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms50_) {
+						num50_++;
+						hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit50.png", 0, 0, 50, 50), msCounter_));
+						hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));
 						Mix_PlayChannel(-1, normalHitNormal_, 0);
 					}
 					else {
-						numMiss++;
+						numMiss_++;
 					}
-					notesPassed++;
-					accuracy = (num300 + (num100 * .3) + (num50 * .15)) / notesPassed;
-					accuracy *= 100;
+					notesPassed_++;
+					accuracy_ = (num300_ + (num100_ * .3) + (num50_ * .15)) / notesPassed_;
+					accuracy_ *= 100;
 					break;
 				}
 			}
@@ -270,33 +286,58 @@ void Game::draw(Graphics &graphics) {
 
 	//Loop through hitCircles_ vector, delete if circle's been clicked or is expired. Otherwise, draw it.
 	for(int i = hitCircles_.size()-1; i >=0 ; --i) {
-		if (hitCircles_[i]->getOffset() - msCounter_ < -APPROACH_CIRCLE_RATE || hitCircles_[i]->clicked_) {
+		if (hitCircles_[i]->getOffset() - msCounter_ < -ms50_ || hitCircles_[i]->clicked_) {
+			if(!hitCircles_[i]->clicked_) {
+				//begin drawing an X for miss
+				hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit0.png", 0, 0, 50, 50), msCounter_));
+				hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));
+			}
+
 			//Update accuracy if expired
 			if (!hitCircles_[i]->clicked_) {
-				numMiss++;
-				notesPassed++;
-				accuracy = (num300 + (num100 * .3) + (num50 * .15)) / notesPassed;
-				accuracy *= 100;
+				numMiss_++;
+				notesPassed_++;
+				accuracy_ = (num300_ + (num100_ * .3) + (num50_ * .15)) / notesPassed_;
+				accuracy_ *= 100;
 			}
 			delete hitCircles_[i];
 			itr = hitCircles_.erase(itr);
+
+			
 		} else {
-			hitCircles_[i]->draw(graphics, msCounter_, numSprite);
+			hitCircles_[i]->draw(graphics, msCounter_, numSprite_);
 		}
 		--itr;
 	}
 
-	
+	std::vector<std::pair<Sprite*, int>>::iterator spriteItr = hitSprites_.end();
+	std::vector<Vector2>::iterator spriteCoordsItr = hitSpriteCoords_.end();
+	--spriteItr;
+	--spriteCoordsItr;
+	//Loop through hitSprites_ vector, delete the sprite after certain amount of time. Otherwise, draw it.
+	for (int i = hitSprites_.size() - 1; i >= 0; --i) {
+		if (msCounter_ - hitSprites_[i].second > 1000) {
+			delete hitSprites_[i].first;
+			spriteItr = hitSprites_.erase(spriteItr);
+			spriteCoordsItr = hitSpriteCoords_.erase(spriteCoordsItr);
+		}
+		else {
+			hitSprites_[i].first->draw(graphics, hitSpriteCoords_[i].x, hitSpriteCoords_[i].y, true, 1.0, 1.0, 180);
+		}
+		--spriteItr;
+		--spriteCoordsItr;
+	}
+
 	//Create accuracy string
 	std::string accStr;
-	if (accuracy == 100) {
+	if (accuracy_ == 100) {
 		accStr = "100.00%";
 	}
-	else if (accuracy >= 10) {
-		accStr = std::to_string(accuracy).substr(0, 5) + "%";
+	else if (accuracy_ >= 10) {
+		accStr = std::to_string(accuracy_).substr(0, 5) + "%";
 	}
 	else {
-		accStr = "0" + std::to_string(accuracy).substr(0, 4) + "%";
+		accStr = "0" + std::to_string(accuracy_).substr(0, 4) + "%";
 	}
 
 	//Draw accuracy at the top right
@@ -306,13 +347,13 @@ void Game::draw(Graphics &graphics) {
 		currChar = accStr[i];
 		if (isdigit(currChar)) {
 			int num = currChar - 48;
-			scoreSprite[num]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
+			scoreSprite_[num]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
 		}
 		else if (currChar == '.') {
-			scoreSprite[10]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
+			scoreSprite_[10]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
 		}
 		else {
-			scoreSprite[11]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
+			scoreSprite_[11]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
 		}
 		xVal -= 40;
 	}

@@ -19,7 +19,8 @@ public:
 	void draw(Graphics &graphics, int currentOffset, Sprite* numSprite[9]);
 	void setCombo(int num);
 
-	int setCombo() const;
+	int getCombo() const;
+	int getOffset() const;
 	int getOffset() { return offset_; }
 	Vector2 getCoords() { return coords_; }
 	bool clicked_;

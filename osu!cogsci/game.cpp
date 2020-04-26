@@ -11,7 +11,7 @@ namespace input_keys {
 }
 
 //Finds and returns a Vector2f(CircleSize, ApproachRate)
-Vector2f assignDifficulty(const std::string& fileName) {
+Vector2f assignDifficulty(const std::string& fileName, float& ms300, float& ms100, float& ms50) {
 	std::ifstream inFile(fileName + ".txt");
 	if (!inFile) {
 		std::cout << "File not found!" << std::endl;
@@ -32,13 +32,22 @@ Vector2f assignDifficulty(const std::string& fileName) {
 	//std::cout << tmpStr.substr(11) << std::endl;
 	std::cout << "CS: " << CS << " HIT_RADIUS: " << HIT_CIRCLE_RADIUS << std::endl;
 	inFile >> tmpStr;
+
+	//Calculate the timing for 300s, 100s, and 50s: https://osu.ppy.sh/help/wiki/Beatmap_Editor/Song_Setup#overall-difficulty
+	int OD = std::stoi(tmpStr.substr(18).c_str());
+	ms300 = 79.5 - (6 * OD);
+	ms100 = 139.5 - (8 * OD);
+	ms50 = 199.5 - (10 * OD);
 	inFile >> tmpStr;
 
 	//Calculate approach rate: https://osu.ppy.sh/help/wiki/Beatmapping/Approach_rate
-	float AR = std::atof(tmpStr.substr(13).c_str());
-	//std::cout << tmpStr.substr(13) << std::endl;
+	float AR = 7;
+	if (tmpStr.substr(0, 12) == "ApproachRate") {
+		AR = std::atof(tmpStr.substr(13).c_str());
+		//std::cout << tmpStr.substr(13) << std::endl;
 
-	std::cout << "AR: " << AR << " APPROACH_RATE: " << APPROACH_CIRCLE_RATE << std::endl;
+		std::cout << "AR: " << AR << " APPROACH_RATE: " << APPROACH_CIRCLE_RATE << std::endl;
+	}
 
 	return Vector2f(CS, AR);
 }
@@ -111,7 +120,7 @@ Game::Game() {
 //The main game loop. Once exited, the program closes.
 void Game::gameLoop() {
 	std::string songName = "Beatmaps/Algorhythm";
-	Vector2f diff = assignDifficulty(songName);
+	Vector2f diff = assignDifficulty(songName, ms300, ms100, ms50);
 	Graphics graphics(diff.x, diff.y);
 	std::cout << SCREEN_WIDTH << " " << SCREEN_HEIGHT << " " << COORDINATE_SCALE << std::endl;
 	Input input;
@@ -140,6 +149,14 @@ void Game::gameLoop() {
 		SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
 		if (cursor) SDL_SetCursor(cursor);
 	}
+
+	//Initialize variables needed to calculate accuracy and score
+	num300 = 0;
+	num100 = 0;
+	num50 = 0;
+	numMiss = 0;
+	notesPassed = 0;
+	accuracy = 100;
 
 	//Start the audio
 	/*Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
@@ -185,7 +202,24 @@ void Game::gameLoop() {
 				//Determine if click is within the circle's radius
 				if (std::sqrt(std::pow(hitCircles_[i]->getCoords().x - mouseX, 2) + std::pow(hitCircles_[i]->getCoords().y - mouseY, 2)) <= HIT_CIRCLE_RADIUS) {
 					hitCircles_[i]->clicked_ = true;
-					Mix_PlayChannel(-1, normalHitNormal_, 0);
+					//Add to num300, num100, num50, or numMiss and update accuracy
+					if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms300) {
+						num300++;
+						Mix_PlayChannel(-1, normalHitNormal_, 0);
+					}
+					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms100) {
+						num100++;
+						Mix_PlayChannel(-1, normalHitNormal_, 0);
+					}
+					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms50) {
+						num50++;
+						Mix_PlayChannel(-1, normalHitNormal_, 0);
+					}
+					else {
+						numMiss++;
+					}
+					notesPassed++;
+					accuracy = (num300 + (num100 * .3) + (num50 * .15)) / notesPassed;
 					break;
 				}
 			}
@@ -203,6 +237,26 @@ void Game::gameLoop() {
 	Mix_FreeMusic(music);
 }
 
+//Method taken from https://gist.github.com/stavrossk/5004111 to draw text with SDL
+void drawText (SDL_Surface* screen, char* string, int size, int x, int y, int fR = 255, int fG = 255, int fB = 255, int bR = 0, int bG = 0, int bB = 0) {
+	TTF_Font* font = TTF_OpenFont("ARIAL.TTF", size);
+
+	SDL_Color foregroundColor = { fR, fG, fB };
+	SDL_Color backgroundColor = { bR, bG, bB };
+
+	SDL_Surface* textSurface
+		= TTF_RenderText_Shaded
+		(font, string, foregroundColor, backgroundColor);
+
+	SDL_Rect textLocation = { x, y, 0, 0 };
+
+	SDL_BlitSurface(textSurface, NULL, screen, &textLocation);
+
+	SDL_FreeSurface(textSurface);
+
+	TTF_CloseFont(font);
+}
+
 void Game::draw(Graphics &graphics) {
 	graphics.clear();
 	std::vector<HitCircle*>::iterator itr = hitCircles_.end();
@@ -218,6 +272,26 @@ void Game::draw(Graphics &graphics) {
 		}
 		--itr;
 	}
+
+	/*
+	//Draw the accuracy at the top right
+	std::string accStr;
+	if (accuracy == 100) {
+		accStr = "100.00%"
+	}
+	else if (accuracy >= 10) {
+		accStr = std::to_string(accuracy).substr(0, 4) + "%";
+	}
+	else {
+		accStr = "0" + std::to_string(accuracy).substr(0, 4) + "%";
+	}
+	TTF_Font* font = TTF_OpenFont("ARIAL.TTF", 12);
+	SDL_Color foregroundColor = { 255, 255, 255 };
+	SDL_Color backgroundColor = { 0, 0, 0 };
+	SDL_Surface* textSurface = TTF_RenderText_Shaded(font, "This is my text.", foregroundColor, backgroundColor);
+	drawText(textSurface, accStr, SCREEN_WIDTH - 100, SCREEN_HEIGHT - 20); //This line doesn't work yet, doesn't look like it needs much more work, just make accStr into char*
+	*/
+
 	graphics.flip();
 }
 

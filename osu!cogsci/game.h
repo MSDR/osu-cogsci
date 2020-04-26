@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <map>
 
 #include "SDL_include/SDL_mixer.h"
 
@@ -27,9 +28,12 @@ private:
 
 	int msCounter_;
 	int beatmap_;
+	int num300, num100, num50, numMiss, notesPassed;
 
 	float CS_;
 	float AR_;
+	float accuracy;
+	float ms300, ms100, ms50;
 
 	HitCircle* testCircle_;
 	HitCircle* testCircle2_;

@@ -45,6 +45,10 @@ void HitCircle::setCombo(int num) {
 	comboNum_ = num;
 }
 
-int HitCircle::setCombo() const {
+int HitCircle::getCombo() const {
 	return comboNum_;
+}
+
+int HitCircle::getOffset() const {
+	return offset_;
 }

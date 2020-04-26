@@ -35,6 +35,7 @@ private:
 	HitCircle* testCircle2_;
 
 	std::vector<HitCircle*> hitCircles_;
+	Sprite* numSprite[9];
 	Sprite* hitCircle_;
 	Sprite* hitCircleOverlay_;
 	Sprite* approachCircle_; //remember to delete and re-create these with each change in circle radius

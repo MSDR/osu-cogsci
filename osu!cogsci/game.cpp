@@ -63,7 +63,6 @@ void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCirc
 	}
 	std::string tmpStr = "";
 	std::vector<std::string> line;
-	int tmpNum;
 
 	//Go through file until it finds the hitcircles
 	while (tmpStr != "[HitObjects]") {
@@ -71,6 +70,7 @@ void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCirc
 	}
 
 	//Start reading in hitcircles
+	int currCombo = 1;
 	inFile >> tmpStr;
 	while (!inFile.eof() && isdigit(tmpStr[0])) {
 		//std::cout << "string is " << tmpStr << std::endl;
@@ -78,12 +78,13 @@ void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCirc
 		//std::cout << "Vec size is " << std::to_string(line.size()) << std::endl;
 		if (line.size() > 1) {
 			if (line[3] == "1") {
-				tmpNum = 1;
+				currCombo++;
 			}
 			else {
-				tmpNum = 2;
+				currCombo = 1;
 			}
-			hitCircles.push_back(new HitCircle(circleSprite, circleOverlay, approachCircle, stoi(line[2]), Vector2(stoi(line[0]), stoi(line[1])), tmpNum));
+			HitCircle* tmpCircle = new HitCircle(circleSprite, circleOverlay, approachCircle, stoi(line[2]), Vector2(stoi(line[0]), stoi(line[1])), currCombo);
+			hitCircles.push_back(tmpCircle);
 			//std::cout << "Loaded hitcircle" << std::endl;
 		}
 		inFile >> tmpStr;
@@ -123,6 +124,11 @@ void Game::gameLoop() {
 	hitCircle_ = new Sprite(graphics, "Skin/hitcircle@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 	hitCircleOverlay_ = new Sprite(graphics, "Skin/hitcircleoverlay@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 	approachCircle_ = new Sprite(graphics, "Skin/approachcircle@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
+
+	//Initialize number assetts
+	for (int i = 0; i < 9; i++) {
+		numSprite[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, 40, 52);
+	}
 
 	//Fill the hitCircles_ vector with the set beatmap
 	fillCircleVec(songName, hitCircles_, hitCircle_, hitCircleOverlay_, approachCircle_);
@@ -208,7 +214,7 @@ void Game::draw(Graphics &graphics) {
 			delete hitCircles_[i];
 			itr = hitCircles_.erase(itr);
 		} else {
-			hitCircles_[i]->draw(graphics, msCounter_);
+			hitCircles_[i]->draw(graphics, msCounter_, numSprite);
 		}
 		--itr;
 	}

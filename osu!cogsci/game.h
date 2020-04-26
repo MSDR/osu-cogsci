@@ -39,7 +39,8 @@ private:
 	HitCircle* testCircle2_;
 
 	std::vector<HitCircle*> hitCircles_;
-	Sprite* numSprite[9];
+	Sprite* numSprite[10];
+	Sprite* scoreSprite[12]; //0-9 are numbers, 10 is ".", 11 is "%"
 	Sprite* hitCircle_;
 	Sprite* hitCircleOverlay_;
 	Sprite* approachCircle_; //remember to delete and re-create these with each change in circle radius

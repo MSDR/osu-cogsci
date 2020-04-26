@@ -134,10 +134,14 @@ void Game::gameLoop() {
 	hitCircleOverlay_ = new Sprite(graphics, "Skin/hitcircleoverlay@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 	approachCircle_ = new Sprite(graphics, "Skin/approachcircle@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 
-	//Initialize number assetts
-	for (int i = 0; i < 9; i++) {
+	//Initialize number and score assets
+	for (int i = 0; i < 10; i++) {
 		numSprite[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, 40, 52);
+		scoreSprite[i] = new Sprite(graphics, "Skin/score-" + std::to_string(i) + ".png", 0, 0, 36, 60);
 	}
+	//Initialize other score assets
+	scoreSprite[10] = new Sprite(graphics, "Skin/score-dot.png", 0, 0, 35, 60);
+	scoreSprite[11] = new Sprite(graphics, "Skin/score-percent.png", 0, 0, 35, 60);
 
 	//Fill the hitCircles_ vector with the set beatmap
 	fillCircleVec(songName, hitCircles_, hitCircle_, hitCircleOverlay_, approachCircle_);
@@ -220,6 +224,7 @@ void Game::gameLoop() {
 					}
 					notesPassed++;
 					accuracy = (num300 + (num100 * .3) + (num50 * .15)) / notesPassed;
+					accuracy *= 100;
 					break;
 				}
 			}
@@ -238,6 +243,7 @@ void Game::gameLoop() {
 }
 
 //Method taken from https://gist.github.com/stavrossk/5004111 to draw text with SDL
+//Not currently working
 void drawText (SDL_Surface* screen, char* string, int size, int x, int y, int fR = 255, int fG = 255, int fB = 255, int bR = 0, int bG = 0, int bB = 0) {
 	TTF_Font* font = TTF_OpenFont("ARIAL.TTF", size);
 
@@ -265,6 +271,13 @@ void Game::draw(Graphics &graphics) {
 	//Loop through hitCircles_ vector, delete if circle's been clicked or is expired. Otherwise, draw it.
 	for(int i = hitCircles_.size()-1; i >=0 ; --i) {
 		if (hitCircles_[i]->getOffset() - msCounter_ < -APPROACH_CIRCLE_RATE || hitCircles_[i]->clicked_) {
+			//Update accuracy if expired
+			if (!hitCircles_[i]->clicked_) {
+				numMiss++;
+				notesPassed++;
+				accuracy = (num300 + (num100 * .3) + (num50 * .15)) / notesPassed;
+				accuracy *= 100;
+			}
 			delete hitCircles_[i];
 			itr = hitCircles_.erase(itr);
 		} else {
@@ -273,24 +286,36 @@ void Game::draw(Graphics &graphics) {
 		--itr;
 	}
 
-	/*
-	//Draw the accuracy at the top right
+	
+	//Create accuracy string
 	std::string accStr;
 	if (accuracy == 100) {
-		accStr = "100.00%"
+		accStr = "100.00%";
 	}
 	else if (accuracy >= 10) {
-		accStr = std::to_string(accuracy).substr(0, 4) + "%";
+		accStr = std::to_string(accuracy).substr(0, 5) + "%";
 	}
 	else {
 		accStr = "0" + std::to_string(accuracy).substr(0, 4) + "%";
 	}
-	TTF_Font* font = TTF_OpenFont("ARIAL.TTF", 12);
-	SDL_Color foregroundColor = { 255, 255, 255 };
-	SDL_Color backgroundColor = { 0, 0, 0 };
-	SDL_Surface* textSurface = TTF_RenderText_Shaded(font, "This is my text.", foregroundColor, backgroundColor);
-	drawText(textSurface, accStr, SCREEN_WIDTH - 100, SCREEN_HEIGHT - 20); //This line doesn't work yet, doesn't look like it needs much more work, just make accStr into char*
-	*/
+
+	//Draw accuracy at the top right
+	char currChar;
+	int xVal = SCREEN_WIDTH - 40;
+	for (int i = accStr.size() - 1; i >= 0; i--) {
+		currChar = accStr[i];
+		if (isdigit(currChar)) {
+			int num = currChar - 48;
+			scoreSprite[num]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
+		}
+		else if (currChar == '.') {
+			scoreSprite[10]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
+		}
+		else {
+			scoreSprite[11]->draw(graphics, xVal, 20, true, 1.0, 1.0, 180);
+		}
+		xVal -= 40;
+	}
 
 	graphics.flip();
 }

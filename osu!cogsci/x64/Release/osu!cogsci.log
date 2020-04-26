@@ -8,15 +8,20 @@ c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(39): warning C4
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(21): warning C4101: 'tmpNum': unreferenced local variable
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(222): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(232): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(226): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(237): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(244): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(245): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(266): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(280): error C2143: syntax error: missing ';' before '}'
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(291): error C2660: 'drawText': function does not take 4 arguments
-  c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(241): note: see declaration of 'drawText'
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(250): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(251): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(272): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(278): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(305): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating code
+  2 of 696 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  osu!cogsci.vcxproj -> C:\Users\jaden\Dropbox\osu!cogsci\osu-cogsci\x64\Release\osu!cogsci.exe

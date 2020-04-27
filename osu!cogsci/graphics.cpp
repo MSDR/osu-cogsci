@@ -46,8 +46,8 @@ SDL_Surface* Graphics::loadImage(const std::string &filePath) {
 	return spriteSheets_[filePath];
 }
 
-void Graphics::blitSurface(SDL_Texture* texture, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle) {
-	SDL_RenderCopy(renderer_, texture, sourceRectangle, destinationRectangle);
+void Graphics::blitSurface(SDL_Texture* texture, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle, double angle, SDL_Point* center) {
+	SDL_RenderCopyEx(renderer_, texture, sourceRectangle, destinationRectangle, angle, center, SDL_FLIP_NONE);
 }
 
 void Graphics::flip() {

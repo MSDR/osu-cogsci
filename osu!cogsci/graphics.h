@@ -22,7 +22,7 @@ public:
 	SDL_Surface* loadImage(const std::string &filePath);
 
 	//Draws a texture to destinationRectangle from sourceRectangle on the spritesheet
-	void blitSurface(SDL_Texture* texture, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle);
+	void blitSurface(SDL_Texture* texture, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle, double angle = 0.0, SDL_Point* center = NULL);
 
 	//Renders everything to the screen
 	void flip();

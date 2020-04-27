@@ -18,6 +18,8 @@ public:
 	//Draws the Sprite onto the screen
 	void draw(Graphics &graphics, int x, int y, bool nullSRect = false, float hScale = 1.0, float wScale = 1.0, float opacity = 255);
 
+	void drawRotated(Graphics &graphics, int x, int y, double angle, SDL_Point* center = NULL, bool nullSRect = false, float hScale = 1.0, float wScale = 1.0, float opacity = 255);
+
 	const float getWidth() const;
 	const float getHeight() const;
 	const float getX() const;

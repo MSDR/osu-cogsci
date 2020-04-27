@@ -31,6 +31,12 @@ void Sprite::draw(Graphics &graphics, int x, int y, bool nullSRect, float hScale
 	graphics.blitSurface(spriteSheet_, nullSRect ? NULL : &sourceRect_, &destinationRectangle);
 }
 
+void Sprite::drawRotated(Graphics & graphics, int x, int y, double angle, SDL_Point * center, bool nullSRect, float hScale, float wScale, float opacity) {
+	SDL_SetTextureAlphaMod(spriteSheet_, opacity);
+	SDL_Rect destinationRectangle = { x, y, sourceRect_.w * hScale, sourceRect_.h * wScale };
+	graphics.blitSurface(spriteSheet_, nullSRect ? NULL : &sourceRect_, &destinationRectangle, angle, center);
+}
+
 void Sprite::update(float elapsedTime) {
 }
 

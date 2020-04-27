@@ -86,8 +86,10 @@ void Game::fillCircleVec(const std::string& fileName, Sprite* circleSprite, Spri
 		line = splitStr(tmpStr);
 		//std::cout << "Vec size is " << std::to_string(line.size()) << std::endl;
 		if (line.size() > 1) {
-			if (line[3] == "1") {
+			if (line[3] == "1" || line[3] == "2") {
 				currCombo++;
+				if (currCombo > 9)
+					currCombo = 1;
 			}
 			else {
 				currCombo = 1;
@@ -156,7 +158,7 @@ Game::Game() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	msCounter_ = 000;
+	msCounter_ = 1;
 	beatmap_ = -1;
 
 	gameLoop();
@@ -183,7 +185,7 @@ Game::Game() {
 
 //The main game loop. Once exited, the program closes.
 void Game::gameLoop() {
-	std::string songName = "Beatmaps/Undertale";
+	std::string songName = "Beatmaps/Sunflower";
 	Vector2f diff = assignDifficulty(songName, ms300_, ms100_, ms50_);
 	Graphics graphics(diff.x, diff.y);
 	std::cout << SCREEN_WIDTH << " " << SCREEN_HEIGHT << " " << COORDINATE_SCALE << std::endl;
@@ -232,22 +234,24 @@ void Game::gameLoop() {
 	notesPassed_ = 0;
 	accuracy_ = 100;
 
-	//Start the audio
-	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
-	music = Mix_LoadMUS((songName + ".mp3").c_str());
-	if(!music) {
-		std::cout << "Mix_LoadMUS(\"music.mp3\"): " << Mix_GetError() << std::endl;
-	}
-
-	Mix_PlayMusic(music, 0);
 
 	//Int used to stop the loop
 	int timePastLast = 0;
+	bool musicPlaying = false;
 
-	//Mix_LoadMUS("music.mp3"): Failed loading libmpg123-0.dll: The specified module could not be found.
 	//Start game loop
 	while (true) {
 		input.beginNewFrame();
+		if(!musicPlaying && msCounter_ > 0) {
+			//Start the audio
+			Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
+			music = Mix_LoadMUS((songName + ".mp3").c_str());
+			if(!music) {
+				std::cout << "Mix_LoadMUS(\"music.mp3\"): " << Mix_GetError() << std::endl;
+			}
+			musicPlaying = true;
+			Mix_PlayMusic(music, 0);
+		}
 		if (SDL_PollEvent(&event)) {
 			if (event.type == SDL_KEYDOWN) {
 				if (event.key.repeat == 0) {
@@ -325,7 +329,7 @@ void Game::gameLoop() {
 		update(std::min(ELAPSED_TIME_MILLIS, MAX_FRAME_TIME));
 		LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
 		draw(graphics);
-		//std::cout << msCounter_ << std::endl;
+		std::cout << msCounter_ << std::endl;
 
 		//If there are no more hitcircles, quit the game after 2 seconds
 		if (hitCircles_.size() == 0) {
@@ -426,7 +430,7 @@ void Game::draw(Graphics &graphics) {
 			offsetItr = lineOffsets_.erase(offsetItr);
 			angleItr = lineAngles_.erase(angleItr);
 		}
-		else if (msCounter_ > lineOffsets_[i].first) {
+		else if (msCounter_ > lineOffsets_[i].first-ms50_) {
 			//Once the overloaded draw function that allows rotation is made, put lineAngles_[i] as the last parameter
 			lineSprites_[i]->drawRotated(graphics, lineSpriteCoords_[i].x, lineSpriteCoords_[i].y, lineAngles_[i], lineCenters_[i], true, 1.0, 1.0, 180);
 		}

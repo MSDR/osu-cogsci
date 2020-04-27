@@ -57,10 +57,13 @@ private:
 	std::vector <std::pair<Sprite*, int> > hitSprites_;
 	std::vector <Vector2> hitSpriteCoords_;
 
+	/*
 	std::vector<Sprite*> lineSprites_;
 	std::vector<std::pair<int, int> > lineOffsets_;
 	std::vector<Vector2> lineSpriteCoords_;
+	std::vector<SDL_Point*> lineCenters_;
 	std::vector<float> lineAngles_;
+	*/
 
 	//Vectors for data collection
 

@@ -106,8 +106,14 @@ void Game::fillCircleVec(const std::string& fileName, Sprite* circleSprite, Spri
 				int length = (int)distance;
 
 				//Create line between hitcircles
+				/*
 				if (currCombo != 1) {
-					lineSpriteCoords_.push_back(Vector2(hitCircles_[hitCircles_.size() - 2]->getCoords().x, hitCircles_[hitCircles_.size() - 2]->getCoords().y));
+					int midY = hitCircles_[hitCircles_.size() - 2]->getCoords().y - distY / 2;
+					lineSpriteCoords_.push_back(Vector2(hitCircles_[hitCircles_.size() - 2]->getCoords().x, midY));
+					SDL_Point* center = new SDL_Point();
+					center->x = lineSpriteCoords_.back().x + distX / 2;
+					center->y = midY;
+					lineCenters_.push_back(center);
 					lineOffsets_.push_back(std::pair<int, int>(hitCircles_[hitCircles_.size() - 2]->getOffset(), hitCircles_[hitCircles_.size() - 1]->getOffset()));
 					float angle;
 					if (distX != 0) {
@@ -116,25 +122,28 @@ void Game::fillCircleVec(const std::string& fileName, Sprite* circleSprite, Spri
 								angle = 0;
 							}
 							else {
-								angle = M_PI;
+								angle = 180;
 							}
 						}
 						else {
-							angle = tan(distY / distX);
+							angle = atan(distY / distX);
+							angle *= 180;
+							angle /= M_PI;
 						}
 					}
 					else {
 						if (distY > 0) {
-							angle = M_PI / 2;
+							angle = 90;
 						}
 						else {
-							angle = 3 * M_PI / 2;
+							angle = 270;
 						}
 					}
 					lineSprites_.push_back(new Sprite(graphics, "Skin/followpoint-3@2x.png", 0, 0, length, 15));
 					lineAngles_.push_back(angle);
 					//std::cout << "LINE ADDED" << std::endl;
 				}
+				*/
 			}
 		}
 		inFile >> tmpStr;
@@ -399,6 +408,7 @@ void Game::draw(Graphics &graphics) {
 		--spriteCoordsItr;
 	}
 
+	/*
 	std::vector<Sprite*>::iterator lineSpriteItr = lineSprites_.end();
 	std::vector<Vector2>::iterator lineCoordsItr = lineSpriteCoords_.end();
 	std::vector<std::pair<int, int> >::iterator offsetItr = lineOffsets_.end();
@@ -418,13 +428,14 @@ void Game::draw(Graphics &graphics) {
 		}
 		else if (msCounter_ > lineOffsets_[i].first) {
 			//Once the overloaded draw function that allows rotation is made, put lineAngles_[i] as the last parameter
-			lineSprites_[i]->draw(graphics, lineSpriteCoords_[i].x, lineSpriteCoords_[i].y, true, 1.0, 1.0, 180);
+			lineSprites_[i]->drawRotated(graphics, lineSpriteCoords_[i].x, lineSpriteCoords_[i].y, lineAngles_[i], lineCenters_[i], true, 1.0, 1.0, 180);
 		}
 		--lineSpriteItr;
 		--lineCoordsItr;
 		--offsetItr;
 		--angleItr;
 	}
+	*/
 
 	//Create accuracy string
 	std::string accStr;

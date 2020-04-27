@@ -96,38 +96,45 @@ void Game::fillCircleVec(const std::string& fileName, Sprite* circleSprite, Spri
 			hitCircles_.push_back(tmpCircle);
 			//std::cout << "Loaded hitcircle" << std::endl;
 
-			//Create line between hitcircles
-			if (hitCircles_.size() > 1 && currCombo != 1) {
-				lineSpriteCoords_.push_back(Vector2(hitCircles_[hitCircles_.size() - 2]->getCoords().x, hitCircles_[hitCircles_.size() - 2]->getCoords().y));
-				lineOffsets_.push_back(std::pair<int, int>(hitCircles_[hitCircles_.size() - 2]->getOffset(), hitCircles_[hitCircles_.size() - 1]->getOffset()));
+			//Add to data collection vectors and create lines if necessary
+			if (hitCircles_.size() > 1) {
 				int distX = hitCircles_[hitCircles_.size() - 2]->getCoords().x - hitCircles_[hitCircles_.size() - 1]->getCoords().x;
 				int distY = hitCircles_[hitCircles_.size() - 2]->getCoords().y - hitCircles_[hitCircles_.size() - 1]->getCoords().y;
-				int length = sqrt(pow(distX, 2) + pow(distY, 2));
-				float angle;
-				if (distX != 0) {
-					if (distY == 0) {
-						if (distX > 0) {
-							angle = 0;
+				float distance = sqrt(pow(distX, 2) + pow(distY, 2));
+				distBetween_.push_back(distance);
+				timeBetween_.push_back(hitCircles_[hitCircles_.size() - 2]->getOffset() - hitCircles_[hitCircles_.size() - 1]->getOffset());
+				int length = (int)distance;
+
+				//Create line between hitcircles
+				if (currCombo != 1) {
+					lineSpriteCoords_.push_back(Vector2(hitCircles_[hitCircles_.size() - 2]->getCoords().x, hitCircles_[hitCircles_.size() - 2]->getCoords().y));
+					lineOffsets_.push_back(std::pair<int, int>(hitCircles_[hitCircles_.size() - 2]->getOffset(), hitCircles_[hitCircles_.size() - 1]->getOffset()));
+					float angle;
+					if (distX != 0) {
+						if (distY == 0) {
+							if (distX > 0) {
+								angle = 0;
+							}
+							else {
+								angle = M_PI;
+							}
 						}
 						else {
-							angle = M_PI;
+							angle = tan(distY / distX);
 						}
 					}
 					else {
-						angle = tan(distY / distX);
+						if (distY > 0) {
+							angle = M_PI / 2;
+						}
+						else {
+							angle = 3 * M_PI / 2;
+						}
 					}
+					lineSprites_.push_back(new Sprite(graphics, "Skin/followpoint-3@2x.png", 0, 0, length, 15));
+					lineAngles_.push_back(angle);
+					//std::cout << "LINE ADDED" << std::endl;
 				}
-				else {
-					if (distY > 0) {
-						angle = M_PI / 2;
-					}
-					else {
-						angle = 3 * M_PI / 2;
-					}
-				}
-				lineSprites_.push_back(new Sprite(graphics, "Skin/followpoint-3@2x.png", 0, 0, length, 15));
-				lineAngles_.push_back(angle);
-				std::cout << "LINE ADDED" << std::endl;
 			}
 		}
 		inFile >> tmpStr;
@@ -144,6 +151,20 @@ Game::Game() {
 	beatmap_ = -1;
 
 	gameLoop();
+
+	//Write all the collected data to a file
+	std::ofstream outFile("dataOut.txt");
+	outFile << "TOP:      DFC:      TB:      DB:\n"; //Time off perfect, distance from center, time between, and distance between
+	for (int i = 0; i < timeOffPerfect_.size(); i++) {
+		outFile << std::to_string(timeOffPerfect_[i]) + std::string(10 - std::to_string(timeOffPerfect_[i]).size(), ' ');
+		outFile << std::to_string(distFromCenter_[i]).substr(5) + std::string(10 - std::to_string(distFromCenter_[i]).substr(5).size(), ' ');
+		if (i > 0) {
+			outFile << std::to_string(timeBetween_[i - 1]) + std::string(10 - std::to_string(timeBetween_[i]).size(), ' ');
+			outFile << std::to_string(distBetween_[i - 1]).substr(5);
+		}
+		outFile << "\n";
+	}
+	outFile.close();
 
 	//Close SDL
 	IMG_Quit();
@@ -211,6 +232,9 @@ void Game::gameLoop() {
 
 	Mix_PlayMusic(music, 0);
 
+	//Int used to stop the loop
+	int timePastLast = 0;
+
 	//Mix_LoadMUS("music.mp3"): Failed loading libmpg123-0.dll: The specified module could not be found.
 	//Start game loop
 	while (true) {
@@ -275,6 +299,11 @@ void Game::gameLoop() {
 					notesPassed_++;
 					accuracy_ = (num300_ + (num100_ * .3) + (num50_ * .15)) / notesPassed_;
 					accuracy_ *= 100;
+					//Add to data collection vectors
+					int distX = abs(hitCircles_[i]->getCoords().x - mouseX);
+					int distY = abs(hitCircles_[i]->getCoords().y - mouseY);
+					distFromCenter_.push_back(sqrt(pow(distX, 2) + pow(distY, 2)));
+					timeOffPerfect_.push_back(abs(msCounter_ - hitCircles_[i]->getOffset()));
 					break;
 				}
 			}
@@ -288,6 +317,14 @@ void Game::gameLoop() {
 		LAST_UPDATE_TIME = CURRENT_TIME_MILLIS;
 		draw(graphics);
 		//std::cout << msCounter_ << std::endl;
+
+		//If there are no more hitcircles, quit the game after 2 seconds
+		if (hitCircles_.size() == 0) {
+			if (timePastLast > 2000) {
+				break;
+			}
+			timePastLast += ELAPSED_TIME_MILLIS;
+		}
 	}
 	Mix_FreeMusic(music);
 }

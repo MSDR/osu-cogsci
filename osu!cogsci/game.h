@@ -61,6 +61,17 @@ private:
 	std::vector<std::pair<int, int> > lineOffsets_;
 	std::vector<Vector2> lineSpriteCoords_;
 	std::vector<float> lineAngles_;
+
+	//Vectors for data collection
+
+	//The size of these will be hitCirles_.size()-2
+	//Index 0 will have distance between circle 0 and 1, index 1 will be between 1 and 2, etc.
+	std::vector<float> distBetween_;
+	std::vector<int> timeBetween_;
+
+	//The size of these will be hitCircle_.size()
+	std::vector<float> distFromCenter_;
+	std::vector<int> timeOffPerfect_;
 };
 
 #endif GAME_H_

@@ -65,7 +65,7 @@ std::vector<std::string> splitStr(std::string& strIn) {
 }
 
 //Fill the input vector with hitcircles from the input beatmap
-void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCircles, Sprite* circleSprite, Sprite* circleOverlay, Sprite* approachCircle) {
+void Game::fillCircleVec(const std::string& fileName, Sprite* circleSprite, Sprite* circleOverlay, Sprite* approachCircle, Graphics& graphics) {
 	std::ifstream inFile(fileName + ".txt");
 	if (!inFile) {
 		std::cout << "File not found!" << std::endl;
@@ -93,8 +93,42 @@ void fillCircleVec(const std::string& fileName, std::vector<HitCircle*>& hitCirc
 				currCombo = 1;
 			}
 			HitCircle* tmpCircle = new HitCircle(circleSprite, circleOverlay, approachCircle, stoi(line[2]), Vector2(stoi(line[0]), stoi(line[1])), currCombo);
-			hitCircles.push_back(tmpCircle);
+			hitCircles_.push_back(tmpCircle);
 			//std::cout << "Loaded hitcircle" << std::endl;
+
+			//Create line between hitcircles
+			if (hitCircles_.size() > 1 && currCombo != 1) {
+				lineSpriteCoords_.push_back(Vector2(hitCircles_[hitCircles_.size() - 2]->getCoords().x, hitCircles_[hitCircles_.size() - 2]->getCoords().y));
+				lineOffsets_.push_back(std::pair<int, int>(hitCircles_[hitCircles_.size() - 2]->getOffset(), hitCircles_[hitCircles_.size() - 1]->getOffset()));
+				int distX = hitCircles_[hitCircles_.size() - 2]->getCoords().x - hitCircles_[hitCircles_.size() - 1]->getCoords().x;
+				int distY = hitCircles_[hitCircles_.size() - 2]->getCoords().y - hitCircles_[hitCircles_.size() - 1]->getCoords().y;
+				int length = sqrt(pow(distX, 2) + pow(distY, 2));
+				float angle;
+				if (distX != 0) {
+					if (distY == 0) {
+						if (distX > 0) {
+							angle = 0;
+						}
+						else {
+							angle = M_PI;
+						}
+					}
+					else {
+						angle = tan(distY / distX);
+					}
+				}
+				else {
+					if (distY > 0) {
+						angle = M_PI / 2;
+					}
+					else {
+						angle = 3 * M_PI / 2;
+					}
+				}
+				lineSprites_.push_back(new Sprite(graphics, "Skin/followpoint-3@2x.png", 0, 0, length, 15));
+				lineAngles_.push_back(angle);
+				std::cout << "LINE ADDED" << std::endl;
+			}
 		}
 		inFile >> tmpStr;
 	}
@@ -150,7 +184,7 @@ void Game::gameLoop() {
 	sprite0_ = new Sprite(graphics, "Skin/hit0.png", 0, 0, 30, 30);
 
 	//Fill the hitCircles_ vector with the set beatmap
-	fillCircleVec(songName, hitCircles_, hitCircle_, hitCircleOverlay_, approachCircle_);
+	fillCircleVec(songName, hitCircle_, hitCircleOverlay_, approachCircle_, graphics);
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 
 	//Load custom cursor
@@ -326,6 +360,33 @@ void Game::draw(Graphics &graphics) {
 		}
 		--spriteItr;
 		--spriteCoordsItr;
+	}
+
+	std::vector<Sprite*>::iterator lineSpriteItr = lineSprites_.end();
+	std::vector<Vector2>::iterator lineCoordsItr = lineSpriteCoords_.end();
+	std::vector<std::pair<int, int> >::iterator offsetItr = lineOffsets_.end();
+	std::vector<float>::iterator angleItr = lineAngles_.end();
+	--lineSpriteItr;
+	--lineCoordsItr;
+	--offsetItr;
+	--angleItr;
+	//Loop through hitSprites_ vector, delete the sprite after certain amount of time. Otherwise, draw it.
+	for (int i = lineSprites_.size() - 1; i >= 0; --i) {
+		if (lineOffsets_[i].second - msCounter_ < -ms50_) {
+			delete lineSprites_[i];
+			lineSpriteItr = lineSprites_.erase(lineSpriteItr);
+			lineCoordsItr = lineSpriteCoords_.erase(lineCoordsItr);
+			offsetItr = lineOffsets_.erase(offsetItr);
+			angleItr = lineAngles_.erase(angleItr);
+		}
+		else if (msCounter_ > lineOffsets_[i].first) {
+			//Once the overloaded draw function that allows rotation is made, put lineAngles_[i] as the last parameter
+			lineSprites_[i]->draw(graphics, lineSpriteCoords_[i].x, lineSpriteCoords_[i].y, true, 1.0, 1.0, 180);
+		}
+		--lineSpriteItr;
+		--lineCoordsItr;
+		--offsetItr;
+		--angleItr;
 	}
 
 	//Create accuracy string

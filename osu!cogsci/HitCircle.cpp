@@ -16,7 +16,7 @@ void HitCircle::draw(Graphics &graphics, int currentOffset, Sprite* numSprite[9]
 		int drawY = (coords_.y - HIT_CIRCLE_RADIUS);
 		hitCircle_->draw(graphics, drawX, drawY, true, 1.0, 1.0, opacity);
 		hitCircleOverlay_->draw(graphics, drawX, drawY, true, 1.0, 1.0, opacity);
-		std::cout << drawX << " " << drawY << " AR " << APPROACH_CIRCLE_RATE << " CS " << HIT_CIRCLE_RADIUS << std::endl;
+		//std::cout << drawX << " " << drawY << " AR " << APPROACH_CIRCLE_RATE << " CS " << HIT_CIRCLE_RADIUS << std::endl;
 
 		//Draw numbers in the circles
 		//Only handles numbers up to 99, but I don't think Osu! allows anything past that either

@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <cmath>
 
 #include "SDL_include/SDL_mixer.h"
 
@@ -21,6 +22,8 @@ public:
 
 private:
 	void gameLoop();
+
+	void fillCircleVec(const std::string& fileName, Sprite* circleSprite, Sprite* circleOverlay, Sprite* approachCircle, Graphics& graphics);
 
 	void draw(Graphics &graphics);
 
@@ -51,8 +54,13 @@ private:
 
 	Mix_Chunk* normalHitNormal_;
 
-	std::vector <std::pair<Sprite*, int>> hitSprites_;
+	std::vector <std::pair<Sprite*, int> > hitSprites_;
 	std::vector <Vector2> hitSpriteCoords_;
+
+	std::vector<Sprite*> lineSprites_;
+	std::vector<std::pair<int, int> > lineOffsets_;
+	std::vector<Vector2> lineSpriteCoords_;
+	std::vector<float> lineAngles_;
 };
 
 #endif GAME_H_

@@ -1,28 +1,38 @@
 ﻿  game.cpp
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\mason\documents\osu!cogsci\osu!cogsci\hitcircle.h(13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\hitcircle.h(14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(21): warning C4101: 'tmpNum': unreferenced local variable
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(242): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(253): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\hitcircle.h(13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\hitcircle.h(14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(21): warning C4101: 'tmpNum': unreferenced local variable
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(105): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(113): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(117): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(122): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(125): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(276): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(287): warning C4244: 'argument': conversion from 'const _Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(266): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(267): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(288): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(300): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(318): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\mason\documents\osu!cogsci\osu!cogsci\game.cpp(346): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(300): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(301): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(322): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(334): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(352): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(374): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(406): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\hitcircle.h(13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\hitcircle.h(14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Generating code
-  1 of 849 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  147 of 1060 functions (13.9%) were compiled, the rest were copied from previous compilation.
+    138 functions were new in current compilation
+    65 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  osu!cogsci.vcxproj -> C:\Users\Mason\Documents\osu!cogsci\x64\Release\osu!cogsci.exe
+  osu!cogsci.vcxproj -> C:\Users\jaden\Dropbox\osu!cogsci\osu-cogsci\x64\Release\osu!cogsci.exe

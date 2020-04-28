@@ -22,18 +22,18 @@ void HitCircle::draw(Graphics &graphics, int currentOffset, Sprite* numSprite[9]
 		//Only handles numbers up to 99, but I don't think Osu! allows anything past that either
 		if (comboNum_ < 10) {
 			int numX = coords_.x - HIT_CIRCLE_RADIUS / 3;
-			int numY = coords_.y - HIT_CIRCLE_RADIUS / 3;
+			int numY = coords_.y - HIT_CIRCLE_RADIUS / 2.5;
 			numSprite[comboNum_]->draw(graphics, numX, numY, true, 1.0, 1.0, opacity);
 		}
 		else {
 			int numX = coords_.x - HIT_CIRCLE_RADIUS / 2;
-			int numY = coords_.x - HIT_CIRCLE_RADIUS / 3;
+			int numY = coords_.y - HIT_CIRCLE_RADIUS / 3;
 			std::string comboStr = std::to_string(comboNum_);
 			//numSprite[std::stoi(comboStr[0]+"")]->draw(graphics, numX, numY, true, 1.0, 1.0, opacity);
 			//numSprite[std::stoi(comboStr[1]+"")]->draw(graphics, numX+45, numY, true, 1.0, 1.0, opacity);
 		}
 
-		float acScale = 1.08 + (timingDiff / ((float)APPROACH_CIRCLE_RATE));
+		float acScale = 1.075 + 1.5*(timingDiff / ((float)APPROACH_CIRCLE_RATE));
 		int acCoordsOffset = (acScale-1)*HIT_CIRCLE_RADIUS+HIT_CIRCLE_RADIUS;
 
 		if(timingDiff > 0) 

@@ -23,7 +23,7 @@ Graphics::Graphics(float CS, float AR) {
 
 	//Assign Circle Size and Approach Rate
 	//https://osu.ppy.sh/community/forums/topics/311844
-	HIT_CIRCLE_RADIUS = COORDINATE_SCALE*((109 - 9 * CS)/2.0); 
+	HIT_CIRCLE_RADIUS = 1.5*COORDINATE_SCALE*((109 - 9 * CS)/2.0); 
 	//std::cout << "CS: " << CS << " HIT_RADIUS: " << HIT_CIRCLE_RADIUS << std::endl;
 
 	//https://osu.ppy.sh/help/wiki/Beatmapping/Approach_rate

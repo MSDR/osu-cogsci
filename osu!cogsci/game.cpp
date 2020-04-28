@@ -158,7 +158,7 @@ Game::Game() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	msCounter_ = 1;
+	msCounter_ = -2000;
 	beatmap_ = -1;
 
 	gameLoop();
@@ -185,7 +185,7 @@ Game::Game() {
 
 //The main game loop. Once exited, the program closes.
 void Game::gameLoop() {
-	std::string songName = "Beatmaps/Sunflower";
+	std::string songName = "Beatmaps/Pokerap";
 	Vector2f diff = assignDifficulty(songName, ms300_, ms100_, ms50_);
 	Graphics graphics(diff.x, diff.y);
 	std::cout << SCREEN_WIDTH << " " << SCREEN_HEIGHT << " " << COORDINATE_SCALE << std::endl;
@@ -201,8 +201,9 @@ void Game::gameLoop() {
 	approachCircle_ = new Sprite(graphics, "Skin/approachcircle@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 
 	//Initialize number and score assets
+	int numSize = HIT_CIRCLE_RADIUS/1.5;
 	for (int i = 0; i < 10; i++) {
-		numSprite_[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, 40, 52);
+		numSprite_[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, numSize, numSize*1.3);
 		scoreSprite_[i] = new Sprite(graphics, "Skin/score-" + std::to_string(i) + ".png", 0, 0, 36, 60);
 	}
 	//Initialize other score assets
@@ -251,6 +252,8 @@ void Game::gameLoop() {
 			}
 			musicPlaying = true;
 			Mix_PlayMusic(music, 0);
+			msCounter_ = 0;
+			int LAST_UPDATE_TIME = SDL_GetTicks();
 		}
 		if (SDL_PollEvent(&event)) {
 			if (event.type == SDL_KEYDOWN) {
@@ -288,19 +291,19 @@ void Game::gameLoop() {
 				if (std::sqrt(std::pow(hitCircles_[i]->getCoords().x - mouseX, 2) + std::pow(hitCircles_[i]->getCoords().y - mouseY, 2)) <= HIT_CIRCLE_RADIUS) {
 					hitCircles_[i]->clicked_ = true;
 					//Add to num300, num100, num50, or numMiss and update accuracy
-					if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms300_) {
+					if (std::abs((int)(msCounter_ + SDL_GetTicks() - LAST_UPDATE_TIME) - hitCircles_[i]->getOffset()) < ms300_) {
 						num300_++;
 						hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit300.png", 0, 0, 50, 50), msCounter_));
 						hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));
 						Mix_PlayChannel(-1, normalHitNormal_, 0);
 					}
-					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms100_) {
+					else if (std::abs((int)(msCounter_ + SDL_GetTicks() - LAST_UPDATE_TIME) - hitCircles_[i]->getOffset()) < ms100_) {
 						num100_++;
 						hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit100.png", 0, 0, 50, 50), msCounter_));
 						hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));
 						Mix_PlayChannel(-1, normalHitNormal_, 0);
 					}
-					else if (std::abs((int)msCounter_ - hitCircles_[i]->getOffset()) < ms50_) {
+					else if (std::abs((int)(msCounter_ + SDL_GetTicks() - LAST_UPDATE_TIME) - hitCircles_[i]->getOffset()) < ms50_) {
 						num50_++;
 						hitSprites_.push_back(std::pair<Sprite*, int>(new Sprite(graphics, "Skin/hit50.png", 0, 0, 50, 50), msCounter_));
 						hitSpriteCoords_.push_back(Vector2(hitCircles_[i]->getCoords().x - 60, hitCircles_[i]->getCoords().y - 30));

@@ -9,7 +9,6 @@ c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(40): warning C4
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(21): warning C4101: 'tmpNum': unreferenced local variable
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(105): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(204): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(206): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(316): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(321): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
@@ -26,11 +25,11 @@ c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(353): warning C
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(354): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(375): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(387): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(405): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(462): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(409): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\jaden\dropbox\osu!cogsci\osu-cogsci\osu!cogsci\game.cpp(466): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Generating code
-  1 of 981 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  10 of 981 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    21 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   osu!cogsci.vcxproj -> C:\Users\jaden\Dropbox\osu!cogsci\osu-cogsci\x64\Release\osu!cogsci.exe

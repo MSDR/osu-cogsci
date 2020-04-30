@@ -21,7 +21,7 @@ void HitCircle::draw(Graphics &graphics, int currentOffset, Sprite* numSprite[9]
 		//Draw numbers in the circles
 		//Only handles numbers up to 99, but I don't think Osu! allows anything past that either
 		if (comboNum_ < 10) {
-			int numX = coords_.x - HIT_CIRCLE_RADIUS / 3;
+			int numX = coords_.x - HIT_CIRCLE_RADIUS / 2.5;
 			int numY = coords_.y - HIT_CIRCLE_RADIUS / 2.5;
 			numSprite[comboNum_]->draw(graphics, numX, numY, true, 1.0, 1.0, opacity);
 		}

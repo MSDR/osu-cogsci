@@ -104,7 +104,7 @@ void Game::fillCircleVec(const std::string& fileName, Sprite* circleSprite, Spri
 				int distY = hitCircles_[hitCircles_.size() - 2]->getCoords().y - hitCircles_[hitCircles_.size() - 1]->getCoords().y;
 				float distance = sqrt(pow(distX, 2) + pow(distY, 2));
 				distBetween_.push_back(distance);
-				timeBetween_.push_back(hitCircles_[hitCircles_.size() - 2]->getOffset() - hitCircles_[hitCircles_.size() - 1]->getOffset());
+				timeBetween_.push_back(hitCircles_[hitCircles_.size() - 1]->getOffset() - hitCircles_[hitCircles_.size() - 2]->getOffset());
 				int length = (int)distance;
 
 				//Create line between hitcircles
@@ -185,7 +185,7 @@ Game::Game() {
 
 //The main game loop. Once exited, the program closes.
 void Game::gameLoop() {
-	std::string songName = "Beatmaps/Pokerap";
+	std::string songName = "Beatmaps/KillerQueen";
 	Vector2f diff = assignDifficulty(songName, ms300_, ms100_, ms50_);
 	Graphics graphics(diff.x, diff.y);
 	std::cout << SCREEN_WIDTH << " " << SCREEN_HEIGHT << " " << COORDINATE_SCALE << std::endl;
@@ -201,7 +201,7 @@ void Game::gameLoop() {
 	approachCircle_ = new Sprite(graphics, "Skin/approachcircle@2x.png", 0, 0, HIT_CIRCLE_RADIUS*2, HIT_CIRCLE_RADIUS*2);
 
 	//Initialize number and score assets
-	int numSize = HIT_CIRCLE_RADIUS/1.5;
+	int numSize = HIT_CIRCLE_RADIUS/2;
 	for (int i = 0; i < 10; i++) {
 		numSprite_[i] = new Sprite(graphics, "Skin/default-" + std::to_string(i) + "@2x.png", 0, 0, numSize, numSize*1.3);
 		scoreSprite_[i] = new Sprite(graphics, "Skin/score-" + std::to_string(i) + ".png", 0, 0, 36, 60);
@@ -386,12 +386,16 @@ void Game::draw(Graphics &graphics) {
 				notesPassed_++;
 				accuracy_ = (num300_ + (num100_ * .3) + (num50_ * .15)) / notesPassed_;
 				accuracy_ *= 100;
+				//Update data collection vectors with -1s to show complete misses
+				distFromCenter_.push_back(-1);
+				timeOffPerfect_.push_back(-1);
 			}
 			delete hitCircles_[i];
 			itr = hitCircles_.erase(itr);
 
 			
-		} else {
+		}
+		else {
 			hitCircles_[i]->draw(graphics, msCounter_, numSprite_);
 		}
 		--itr;
